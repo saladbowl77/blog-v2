@@ -45,7 +45,7 @@ main {
     min-height: calc(100% - 60px - 70px);
 }
 
-@media screen and (max-width: 1000px){
+@media screen and (max-width: 1030px){
     main {
         width: calc(100% - 30px);
         margin: 0 15px;

@@ -1,7 +1,7 @@
 <script>
     import { head } from "$lib/site-config.js";
     import Profile from '$lib/assets/Profile.svelte';
-    import GAds from '$lib/assets/GAds.svelte';
+    import Ads from './Ads.svelte';
 
     import './blog_style.css';
     import hljs from 'highlight.js';
@@ -61,7 +61,7 @@
     </section>
     <section id="content">
         {@html data.content}
-        <GAds />
+        <Ads />
     </section>
 
     <Profile />

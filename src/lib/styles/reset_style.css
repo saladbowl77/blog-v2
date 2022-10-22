@@ -1,0 +1,53 @@
+html,body,header,main,footer,section,div,
+h1,h2,h3,h4,h5,
+p,a,span,
+table,tr,th,td,
+ul,ol,li,
+pre, code {margin: 0; padding: 0; font-family: 'Noto Sans JP', sans-serif;}
+
+html,body,header,main,footer,section,div,
+p,a,span,
+tr,th,td,
+ul,ol,li {font-size: 16px;}
+
+h1 {font-size: 24px; font-weight: bold;}
+h2 {font-size: 22px; font-weight: bold;}
+h3 {font-size: 10px; font-weight: bold;}
+h3 {font-size: 18px; font-weight: bold;}
+h4 {font-size: 17px; font-weight: bold;}
+h5 {font-size: 16px;}
+
+.tc {text-align: center;}
+.ln-b {display: inline-block;}
+.top_title {font-size: 1.3em;}
+.title,
+.title span {font-size: 1.2rem;}
+
+p a {display: inline-block;}
+a {display: block;}
+
+html {
+    height: 100%;
+}
+
+body {
+    text-rendering: optimizeSpeed;
+    line-height:1.5;
+    background-color: #fafafa;
+    height: 100%;
+}
+
+main {
+    max-width: 1000px;
+    display: block;
+    margin: 0 auto;
+    height: fit-content;
+    min-height: calc(100% - 60px - 70px);
+}
+
+@media screen and (max-width: 1000px){
+    main {
+        width: calc(100% - 30px);
+        margin: 0 15px;
+    }
+}

@@ -1,7 +1,7 @@
 <script>
     import { head } from "$lib/site-config.js";
     import Profile from '$lib/assets/Profile.svelte';
-    import Ads from './Ads.svelte';
+    import Ads from '$lib/assets/Ads.svelte';
 
     import './blog_style.css';
     import hljs from 'highlight.js';

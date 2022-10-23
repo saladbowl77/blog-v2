@@ -1,12 +1,9 @@
 <script>
-    import { browser } from "$app/environment";
     import { onMount } from "svelte";
 
-    if (browser) {
-        onMount(() => {
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        });
-    }
+    onMount(() => {
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    });
 </script>
 
 <style>

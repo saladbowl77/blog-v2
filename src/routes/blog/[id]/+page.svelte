@@ -1,7 +1,6 @@
 <script>
     import { head } from "$lib/site-config.js";
     import Profile from '$lib/assets/Profile.svelte';
-    import Ads from './Ads.svelte';
 
     import './blog_style.css';
     import hljs from 'highlight.js';
@@ -14,6 +13,7 @@
     if (browser) {
         onMount(() => {
             hljs.highlightAll();
+            (adsbygoogle = window.adsbygoogle || []).push({});
         });
     }
 </script>
@@ -61,8 +61,24 @@
     </section>
     <section id="content">
         {@html data.content}
-        <Ads />
     </section>
+    
+    <div class="g_ads-bar">
+        <ins
+            class="adsbygoogle"
+            style="display:block"
+            data-ad-format="fluid"
+            data-ad-layout-key="-ef+6k-30-ac+ty"
+            data-ad-client="ca-pub-7630389826147489"
+            data-ad-slot="2294645793"
+        ></ins>
+    </div>
 
     <Profile />
 </main>
+
+<style>
+    div.g_ads-bar {
+        max-width: 100%;
+    }
+</style>

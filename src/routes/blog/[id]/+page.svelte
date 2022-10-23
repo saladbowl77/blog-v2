@@ -13,7 +13,7 @@
     if (browser) {
         onMount(() => {
             hljs.highlightAll();
-            (adsbygoogle = window.adsbygoogle || []).push({});
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
         });
     }
 </script>

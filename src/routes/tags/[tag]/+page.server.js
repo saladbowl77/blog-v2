@@ -1,4 +1,4 @@
-import { createClient } from 'newt-client-js';
+import { createClient } from 'minano-cms-sdk';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -9,18 +9,18 @@ export function load({ params }) {
         return `${resDt.getFullYear()}/${resDt.getMonth() + 1}/${resDt.getDate()} ${resDt.getHours()}:${("0" + resDt.getMinutes()).slice(0,2)}:${("0" + resDt.getSeconds()).slice(0,2)}`
     }
 
-    async function getdata() {    
+    async function getdata() {
         const client = createClient({
-            spaceUid: process.env['NEWT_SPACE_ID'],
-            token: process.env['NEWT_TOKEN'],
-            apiType: 'cdn'
+            serviceDomain: process.env.MINANO_SERVICE_DOMAIN,
+            apiKey: process.env.MINANO_API_KEY
         });
-    
-        const res = await client.getContents({
-            appUid: process.env['NEWT_APP_ID'],
-            modelUid: 'blog-post',
-            query: {
-                'tags': params.tag
+
+        // Minano CMS SDK doesn't support query filters yet, so we fetch all and filter client-side
+        const { items } = await client.getList({
+            endpoint: process.env.MINANO_CONTENT_TYPE,
+            queries: {
+                limit: 100,
+                order: "-publishedAt"
             }
         });
 
@@ -29,13 +29,15 @@ export function load({ params }) {
             "contents" : []
         };
 
-        for (let i=0; i<res.total; i++){
-            if (!res.items[i].closed_page && new Date(res.items[i].uploadDate) < new Date()){
+        for (let i=0; i<items.length; i++){
+            const item = items[i];
+            // Filter by tag client-side and check for closed_page
+            if (item.data.tags?.includes(params.tag) && !item.data.closed_page) {
                 newsContents["contents"].push({
-                    "blogUrl": res.items[i].blogUrl,
-                    "blogTitle": res.items[i].blogTitle,
-                    "blogTag": res.items[i].tags[0],
-                    "uploadDate": dateTime(res.items[i].uploadDate).slice(0,-9),
+                    "blogUrl": item.data.blogUrl || item.slug,
+                    "blogTitle": item.data.blogTitle,
+                    "blogTag": item.data.tags?.[0],
+                    "uploadDate": dateTime(item.data.uploadDate || item.publishedAt).slice(0,-9),
                 })
             }
         }

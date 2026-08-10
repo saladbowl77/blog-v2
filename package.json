@@ -22,6 +22,6 @@
 	"dependencies": {
 		"@sveltejs/adapter-netlify": "^1.0.0-next.81",
 		"dotenv": "^16.0.3",
-		"newt-client-js": "^3.1.1"
+		"minano-cms-sdk": "github:saladbowl77/minano-cms-sdk#v0.1.0"
 	}
 }

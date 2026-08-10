@@ -1,4 +1,4 @@
-import { createClient } from 'newt-client-js';
+import { createClient, MinanoCmsApiError } from 'minano-cms-sdk';
 import dotenv from 'dotenv';
 import { error } from '@sveltejs/kit';
 
@@ -10,37 +10,40 @@ export function load({ params }) {
         return `${resDt.getFullYear()}/${resDt.getMonth() + 1}/${resDt.getDate()} ${resDt.getHours()}:${("0" + resDt.getMinutes()).slice(0,2)}:${("0" + resDt.getSeconds()).slice(0,2)}`
     }
 
-    async function getdata() {    
+    async function getdata() {
         const client = createClient({
-            spaceUid: process.env['NEWT_SPACE_ID'],
-            token: process.env['NEWT_TOKEN'],
-            apiType: 'cdn'
+            serviceDomain: process.env.MINANO_SERVICE_DOMAIN,
+            apiKey: process.env.MINANO_API_KEY
         });
-    
-        const res = await client.getContents({
-            appUid: process.env['NEWT_APP_ID'],
-            modelUid: 'blog-post',
-            query: {
-                'blogUrl': params.id
-            }
-        });
-        if (res.total == 0){
-            throw error(404, 'not found');
-        } else {
+
+        try {
+            const entry = await client.getListDetail({
+                endpoint: process.env.MINANO_CONTENT_TYPE,
+                slug: params.id
+            });
+
+            const uploadDate = new Date(entry.data.uploadDate || entry.publishedAt);
+            const lastUpdate = new Date(entry.data.lastUpdate || entry.publishedAt);
+
             return {
                 "status": 200,
-                "blogUrl": res.items[0].blogUrl,
-                "blogTitle": res.items[0].blogTitle,
-                "tags": res.items[0].tags,
-                "closed": res.items[0].closed_page || new Date(res.items[0].uploadDate) > new Date(),
-                "older" : new Date() - new Date(res.items[0].uploadDate) >= 1000 * 60 * 60 * 24 * 365 * 1,
+                "blogUrl": entry.data.blogUrl || entry.slug,
+                "blogTitle": entry.data.blogTitle,
+                "tags": entry.data.tags,
+                "closed": entry.data.closed_page || false,
+                "older" : new Date() - uploadDate >= 1000 * 60 * 60 * 24 * 365 * 1,
                 "date": {
-                    "uploadDate": dateTime(res.items[0].uploadDate),
-                    "lastUpdate": dateTime(res.items[0]._sys.updatedAt),
+                    "uploadDate": dateTime(uploadDate),
+                    "lastUpdate": dateTime(lastUpdate),
                 },
-                "description": res.items[0].description,
-                "content": res.items[0].content
+                "description": entry.data.description,
+                "content": entry.data.content
             };
+        } catch (e) {
+            if (e instanceof MinanoCmsApiError && e.code === 'NOT_FOUND') {
+                throw error(404, 'not found');
+            }
+            throw e;
         }
     }
 

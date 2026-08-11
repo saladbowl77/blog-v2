@@ -1,6 +1,7 @@
 import { createClient, MinanoCmsApiError } from 'minano-cms-sdk';
 import dotenv from 'dotenv';
 import { error } from '@sveltejs/kit';
+import { markdownToHtml } from '$lib/markdown.js';
 
 dotenv.config();
 
@@ -37,7 +38,7 @@ export function load({ params }) {
                     "lastUpdate": dateTime(lastUpdate),
                 },
                 "description": entry.data.description,
-                "content": entry.data.content
+                "content": markdownToHtml(entry.data.content)
             };
         } catch (e) {
             if (e instanceof MinanoCmsApiError && e.code === 'NOT_FOUND') {

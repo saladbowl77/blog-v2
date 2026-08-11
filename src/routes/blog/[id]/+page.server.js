@@ -28,7 +28,7 @@ export function load({ params }) {
 
             return {
                 "status": 200,
-                "blogUrl": entry.data.blogUrl || entry.slug,
+                "blogUrl": entry.slug,
                 "blogTitle": entry.data.blogTitle,
                 "tags": entry.data.tags,
                 "closed": entry.data.closed_page || false,

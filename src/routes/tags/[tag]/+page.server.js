@@ -34,7 +34,7 @@ export function load({ params }) {
             // Filter by tag client-side and check for closed_page
             if (item.data.tags?.includes(params.tag) && !item.data.closed_page) {
                 newsContents["contents"].push({
-                    "blogUrl": item.data.blogUrl || item.slug,
+                    "blogUrl": item.slug,
                     "blogTitle": item.data.blogTitle,
                     "blogTag": item.data.tags?.[0],
                     "uploadDate": dateTime(item.data.uploadDate || item.publishedAt).slice(0,-9),
